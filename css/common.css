@@ -52,15 +52,12 @@
   border-bottom: 1px solid rgba(232, 232, 232, 1);
 }
 .co-comp-header .comp-header-tag {
-  /* width: 92px; 单个的宽度 */
   padding: 0 16px;
 }
 
 .co-comp .co-comp-header .comp-header-content {
   display: flex;
-}
-
-.comp-header-content {
+  align-items: center;
   margin-right: 10px;
 }
 
@@ -191,7 +188,7 @@
   left: 50%;
   top: 0;
   width: 3px;
-  height: 130%;
+  height: 127%;
   background-color: #abaeb1;
 }
 
@@ -221,7 +218,7 @@
   left: 82%;
 }
 .co-layout-left2 {
-  left: 25%;
+  left: 50%;
 }
 
 .co-cont-layout .cont-layout-cont {
@@ -251,4 +248,55 @@
   color: rgba(0, 0, 0, 0.847058823529412);
 }
 
-/* 主色调：#1890FF */
+.con-answer,
+.con-ask,
+.con-test {
+  position: relative;
+  margin-top: 3%;
+}
+.con-answer::before,
+.con-ask::before {
+  position: absolute;
+  bottom: 41px;
+  left: 8%;
+  width: 218px;
+  height: 1px;
+  background-color: rgba(233, 233, 233, 1);
+  content: "";
+  display: inline-block;
+}
+.con-ask::before {
+  width: 285px;
+  left: 4%;
+}
+.con-test {
+  margin-top: 10px;
+}
+.con-test::before {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  width: 303px;
+  height: 1px;
+  background-color: rgba(233, 233, 233, 1);
+  content: "";
+  display: inline-block;
+}
+
+.con-rigester,
+.con-xuzhan {
+  position: relative;
+}
+
+.con-rigester::before,
+.con-xuzhan::before {
+  position: absolute;
+  top: 10%;
+  right: 3%;
+  content: "";
+  display: inline-block;
+  width: 170px;
+  height: 1px;
+  background-color: rgba(233, 233, 233, 1);
+}

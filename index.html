@@ -6,6 +6,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="stylesheet" href="css/datepicker.css" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/common.css" />
     <title>主页面</title>
@@ -30,9 +31,24 @@
                 <li>本周</li>
                 <li>本月</li>
               </ul>
-              <div class="content-rilicomp">
-                <!-- 日历组件 -->
+
+              <div class="c-datepicker-date-editor J-datepicker-range-day">
+                <input
+                  placeholder="开始日期"
+                  name=""
+                  class="c-datepicker-data-input only-date"
+                  value=""
+                />
+                <span class="c-datepicker-range-separator">~</span>
+                <input
+                  placeholder="结束日期"
+                  name=""
+                  class="c-datepicker-data-input only-date"
+                  value=""
+                />
+                <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
               </div>
+
               <p class="header-content-detail">
                 <a href=""
                   ><span>查看详情</span>
@@ -41,8 +57,9 @@
               </p>
             </div>
           </div>
-          <div class="co-comp-body">
-            <div class="con-tiwen" style="width: 560px; height: 248px"></div>
+          <div class="co-comp-body co-comp-layout">
+            <div class="con-answer" style="width: 50%; height: 300px"></div>
+            <div class="con-ask" style="width: 50%; height: 300px"></div>
           </div>
         </div>
 
@@ -70,7 +87,9 @@
           <div class="co-comp-body co-comp-layout">
             <div class="con-always" style="width: 1000px; height: 267px"></div>
             <div class="con-always-body">
-              <p>提问关键字排名<span>更多 ></span></p>
+              <p>
+                提问关键字排名<a href=""><span>更多 ></span></a>
+              </p>
               <ul class="co-li-notype">
                 <li>
                   <a href="">
@@ -236,9 +255,7 @@
             <div class="co-comp-header">
               <div class="co-tab co-font comp-header-tag">通知</div>
             </div>
-            <div
-              class="co-comp-body co-comp-layout comp-height-inform cont-layout-offset"
-            >
+            <div class="co-comp-body comp-height-inform">
               <div class="co-cont-layout co-layout-left2">
                 <div class="cont-layout-cont">
                   <p class="co-font">发布通知数</p>
@@ -262,12 +279,15 @@
             </div>
           </div>
         </div>
-        <!--  -->
       </div>
     </div>
   </body>
 
   <script src="resources/scripts/jquery-1.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js"></script>
+  <script src="js/moment.min.js"></script>
+  <script src="js/datepicker.all.min.js"></script>
+  <script src="js/datepicker.en.js"></script>
   <script src="js/index.js"></script>
+  <script src="js/datepicker.js"></script>
 </html>

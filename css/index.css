@@ -6,7 +6,7 @@
   display: flex;
 }
 .left {
-  width: 300px;;
+  width: 300px;
   height: 1000px;
   background-color: red;
 }
@@ -38,4 +38,22 @@
   font-size: 16px;
   color: rgba(0, 0, 255, 0.647058823529412);
   cursor: pointer;
+}
+
+/* 日期选择控件的样式 */
+.c-datepicker-date-editor {
+  width: 249px;
+  height: 27px;
+  line-height: 27px;
+  margin-right: 10px;
+}
+.c-datepicker-picker__sidebar {
+  width: 0;
+  border: none;
+}
+.c-datepicker-picker__body {
+  margin-left: 0 !important;
+}
+.c-datepicker-picker {
+  /* margin-left: 94px !important; */
 }
