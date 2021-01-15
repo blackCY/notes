@@ -8,9 +8,9 @@
 ## main.js 文件全局注册组件
 
 ```js
-import Vue from "vue";
-import pageHead from "./components/page-head.vue";
-Vue.component("page-head", pageHead);
+import Vue from 'vue'
+import pageHead from './components/page-head.vue'
+Vue.component('page-head', pageHead)
 ```
 
 ## easycom
@@ -30,9 +30,9 @@ Vue.component("page-head", pageHead);
 // 这里不用import引入，也不需要在components内注册uni-list组件。template里就可以直接用
 export default {
   data() {
-    return {};
-  },
-};
+    return {}
+  }
+}
 </script>
 ```
 
@@ -76,23 +76,23 @@ export default {
 ## 数据请求
 
 ```js
-uni.request({});
+uni.request({})
 ```
 
 ## 数据缓存
 
 ```js
-uni.setStorage({});
-uni.setStorageSync({});
+uni.setStorage({})
+uni.setStorageSync({})
 
-uni.getStorage({});
-uni.getStorageSync({});
+uni.getStorage({})
+uni.getStorageSync({})
 
-uni.removeStorage({});
-uni.removeStorageSync({});
+uni.removeStorage({})
+uni.removeStorageSync({})
 
-uni.clearStorage({});
-uni.clearStorageSync({});
+uni.clearStorage({})
+uni.clearStorageSync({})
 ```
 
 ## 上传图片
@@ -130,6 +130,10 @@ uni.clearStorageSync({});
 
 - 如果使用 div，编译时会被转换为 view
 
+#### probrem
+
+- @tab 事件
+
 ### icon
 
 - 由于 icon 组件各端表现存在差异，可以通过使用 字体图标 的方式来弥补各端差异
@@ -159,6 +163,179 @@ uni.clearStorageSync({});
 - 除了文本节点以外的其他节点都无法长按选中。
 - 支持 \n 方式换行。
 - 如果使用 <span> 组件编译时会被转换为 <text>。
+
+### navigator
+
+该组件类似于 HTML 中的 `<a>` 组件，但只能跳转本地页面。目标页面必须在 pages.json 中注册
+
+#### 注意
+
+- 跳转 tabBar 页面，必须设置 open-type="switchTab", 及跳转到 tabBar 页面，并关闭其他非 tabBar 页面
+- navigator-hover 默认为 {background-color: rgba(0, 0, 0, 0.1); opacity: 0.7;}，`<navigator> 的子节点背景色应为透明色`
+- app-nvue 平台只有纯 nvue 项目(render 为 native)才支持`<navigator>`。非 render 为 native 的情况下，nvue 暂不支持 navigator 组件，请使用 API 跳转
+- app 下退出应用，Android 平台可以使用 [plus.runtime.quit](https://www.html5plus.org/doc/zh_cn/runtime.html#plus.runtime.quit)。IOS 没有退出应用的概念。
+- 如果想实现 web 外链跳转，可参考 [uLink 组件](https://ext.dcloud.net.cn/plugin?id=1182)
+
+### scroll-view
+
+可滚动视图区域。用于区域滚动。
+
+**需注意在 webview 渲染的页面中，区域滚动的性能不及页面滚动**
+
+```vue
+<template>
+  <view>
+    <page-head title="scroll-view,区域滚动视图"></page-head>
+    <view class="uni-padding-wrap uni-common-mt">
+      <view class="uni-title uni-common-mt">
+        Vertical Scroll
+        <text>\n纵向滚动</text>
+      </view>
+      <view>
+        <scroll-view
+          :scroll-top="scrollTop"
+          scroll-y="true"
+          class="scroll-Y"
+          @scrolltoupper="upper"
+          @scrolltolower="lower"
+          @scroll="scroll"
+        >
+          <view id="demo1" class="scroll-view-item uni-bg-red">A</view>
+          <view id="demo2" class="scroll-view-item uni-bg-green">B</view>
+          <view id="demo3" class="scroll-view-item uni-bg-blue">C</view>
+        </scroll-view>
+      </view>
+      <view @tap="goTop" class="uni-link uni-center uni-common-mt"
+        >点击这里返回顶部</view
+      >
+
+      <view class="uni-title uni-common-mt">
+        Horizontal Scroll
+        <text>\n横向滚动</text>
+      </view>
+      <view>
+        <scroll-view
+          class="scroll-view_H"
+          scroll-x="true"
+          @scroll="scroll"
+          scroll-left="120"
+        >
+          <view id="demo1" class="scroll-view-item_H uni-bg-red">A</view>
+          <view id="demo2" class="scroll-view-item_H uni-bg-green">B</view>
+          <view id="demo3" class="scroll-view-item_H uni-bg-blue">C</view>
+        </scroll-view>
+      </view>
+      <view class="uni-common-pb"></view>
+    </view>
+  </view>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      scrollTop: 0,
+      old: {
+        scrollTop: 0
+      }
+    }
+  },
+  methods: {
+    // 滚动到顶部/左边，会触发 scrolltoupper 事件
+    upper: function (e) {
+      console.log(e)
+    },
+    // 滚动到底部/右边，会触发 scrolltolower 事件
+    lower: function (e) {
+      console.log(e)
+    },
+    // scroll: 滚动时触发
+    scroll: function (e) {
+      console.log(e)
+      this.old.scrollTop = e.detail.scrollTop
+    },
+    goTop: function (e) {
+      // 解决view层不同步的问题
+      this.scrollTop = this.old.scrollTop
+      this.$nextTick(function () {
+        this.scrollTop = 0
+      })
+      // toast
+      uni.showToast({
+        icon: 'none',
+        title: '纵向滚动 scrollTop 值已被修改为 0'
+      })
+    }
+  }
+}
+</script>
+
+<style>
+.scroll-Y {
+  height: 300rpx;
+}
+
+.scroll-view_H {
+  white-space: nowrap;
+  width: 100%;
+}
+
+.scroll-view-item {
+  height: 300rpx;
+  line-height: 300rpx;
+  text-align: center;
+  font-size: 36rpx;
+}
+
+.scroll-view-item_H {
+  display: inline-block;
+  width: 100%;
+  height: 300rpx;
+  line-height: 300rpx;
+  text-align: center;
+  font-size: 36rpx;
+}
+</style>
+```
+
+#### Tips
+
+- APP-vue 和小程序中，请勿在 scroll-view 中使用 map、video 等原生组件。小程序中 scroll-view 中也不要使用 canvas、textarea 原生组件。**更新：微信基础库 2.4.4 起支持了原生组件在 scroll-view、swiper、movable-view 中的使用。app-nvue 无此限制。**
+- **scroll-view 不适合放长列表，有性能问题。**长列表滚动和下拉刷新，应该使用原生导航栏搭配页面级的滚动和下拉刷新实现。包括在 app-nvue 页面，长列表应该使用 list 而不是 scroll-view
+- scroll-into-view 的优先级高于 scroll-top。
+- scroll-view 是区域滚动，不会触发页面滚动，无法触发 pages.json 配置的下拉刷新、页面触底 onReachBottomDistance、titleNView 的 transparent 透明渐变。
+- 若要使用下拉刷新，建议使用页面的滚动，而不是 scroll-view 。插件市场有前端模拟的基于 scroll-view 的下拉刷新，但性能不佳。如必需使用前端下拉刷新，推荐使用基于 wxs 的下拉刷新，性能会比基于 js 监听方式更高。
+- 如果遇到 scroll-top、scroll-left 属性设置不生效的问题参考：[组件属性设置不生效解决办法](https://uniapp.dcloud.io/vue-api?id=componentsolutions)
+- scroll-view 的滚动条设置，可通过 css 的-webkit-scrollbar 自定义，包括隐藏滚动条。(app-nvue 无此 css)
+
+### swiper
+
+滑块视图容器。
+
+一般用于左右滑动或上下滑动，比如 banner 轮播图。
+
+注意滑动切换和滚动的区别，滑动切换是一屏一屏的切换。swiper 下的每个 swiper-item 是一个滑动切换区域，不能停留在 2 个滑动区域之间。
+
+#### Tips
+
+- 使用竖向滚动时，需要给 `<scroll-view>` 一个固定高度，通过 css 设置 height。
+- 注意：其中只可放置 `<swiper-item>` 组件，否则会导致未定义的行为。
+- 如果遇到 current、current-item-id 属性设置不生效的问题参考：[组件属性设置不生效解决办法](https://uniapp.dcloud.io/vue-api?id=_4-%e7%bb%84%e4%bb%b6%e5%b1%9e%e6%80%a7%e8%ae%be%e7%bd%ae%e4%b8%8d%e7%94%9f%e6%95%88%e8%a7%a3%e5%86%b3%e5%8a%9e%e6%b3%95)
+- banner 图的切换效果和指示器的样式，有多种风格可自定义，可在 uni-app 插件市场搜索
+- swiper 在 App 的 vue 中、百度支付宝头条 QQ 小程序中，不支持内嵌 video、map 等原生组件。在微信基础库 2.4.4 起和 App nvue2.1.5 起支持内嵌原生组件。竖向的 swiper 内嵌视频可实现抖音、映客等视频垂直拖动切换效果。
+- 同时监听 change transition，开始滑动时触发 transition, 放开手后，在 ios 平台触发顺序为 transition... change，Android/微信小程序/支付宝为 transition... change transition...
+
+#### swiper-item
+
+**仅可放置在 `<swiper>` 组件中，宽高自动设置为 100%。注意：宽高 100%是相对于其父组件，不是相对于子组件，不能被子组件自动撑开。**
+
+### image
+
+`<image>` 组件默认宽度 300px、高度 225px；app-nvue 平台，暂时默认为屏幕宽度
+src 仅支持相对路径、绝对路径，支持 base64 码；
+页面结构复杂，css 样式太多的情况，使用 image 可能导致样式生效较慢，出现 “闪一下” 的情况，此时设置 image{will-change: transform} ,可优化此问题。
+自定义组件里面使用 `<image>`时，若 src 使用相对路径可能出现路径查找失败的情况，故建议使用绝对路径。
+webp 格式的图片在 Android 上是内置支持的。iOS 上不同平台不一样，具体如下：app-vue 下，iOS 不支持；app-nvue 下，iOS 支持；微信小程序 2.9.0 起，iOS 支持。
+svg 格式的图片在不同的平台支持情况不同。具体为：app-nvue 不支持 svg 格式的图片，小程序上只支持网络地址。
 
 ## 宽屏适配指南
 
@@ -254,14 +431,14 @@ rightWindow 对应的页面不需要重写一遍新闻详情的页面逻辑，�
   export default {
     created(e) {
       //监听自定义事件，该事件由详情页列表的点击触发
-      uni.$on("updateDetail", (e) => {
+      uni.$on('updateDetail', (e) => {
         // 执行 detailPage组件，即：/pages/detail/detail.nvue 页面的load方法
-        this.$refs.detailPage.load(e.detail);
-      });
+        this.$refs.detailPage.load(e.detail)
+      })
     },
     onLoad() {},
-    methods: {},
-  };
+    methods: {}
+  }
 </script>
 ```
 
@@ -409,46 +586,46 @@ match-media 示例
 ```js
 // postcss.config.js
 
-const path = require("path");
+const path = require('path')
 module.exports = {
-  parser: "postcss-comment",
+  parser: 'postcss-comment',
   plugins: {
-    "postcss-import": {
+    'postcss-import': {
       resolve(id, basedir, importOptions) {
-        if (id.startsWith("~@/")) {
-          return path.resolve(process.env.UNI_INPUT_DIR, id.substr(3));
-        } else if (id.startsWith("@/")) {
-          return path.resolve(process.env.UNI_INPUT_DIR, id.substr(2));
-        } else if (id.startsWith("/") && !id.startsWith("//")) {
-          return path.resolve(process.env.UNI_INPUT_DIR, id.substr(1));
+        if (id.startsWith('~@/')) {
+          return path.resolve(process.env.UNI_INPUT_DIR, id.substr(3))
+        } else if (id.startsWith('@/')) {
+          return path.resolve(process.env.UNI_INPUT_DIR, id.substr(2))
+        } else if (id.startsWith('/') && !id.startsWith('//')) {
+          return path.resolve(process.env.UNI_INPUT_DIR, id.substr(1))
         }
-        return id;
-      },
+        return id
+      }
     },
     autoprefixer: {
-      overrideBrowserslist: ["Android >= 4", "ios >= 8"],
-      remove: process.env.UNI_PLATFORM !== "h5",
+      overrideBrowserslist: ['Android >= 4', 'ios >= 8'],
+      remove: process.env.UNI_PLATFORM !== 'h5'
     },
     // 借助postcss-px-to-viewport插件，实现rpx转px，文档：https://github.com/evrone/postcss-px-to-viewport/blob/master/README_CN.md
     // 以下配置，可以将rpx转换为1/2的px，如20rpx=10px，如果要调整比例，可以调整 viewportWidth 来实现
-    "postcss-px-to-viewport": {
-      unitToConvert: "rpx",
+    'postcss-px-to-viewport': {
+      unitToConvert: 'rpx',
       viewportWidth: 200,
       unitPrecision: 5,
-      propList: ["*"],
-      viewportUnit: "px",
-      fontViewportUnit: "px",
+      propList: ['*'],
+      viewportUnit: 'px',
+      fontViewportUnit: 'px',
       selectorBlackList: [],
       minPixelValue: 1,
       mediaQuery: false,
       replace: true,
       exclude: undefined,
       include: undefined,
-      landscape: false,
+      landscape: false
     },
-    "@dcloudio/vue-cli-plugin-uni/packages/postcss": {},
-  },
-};
+    '@dcloudio/vue-cli-plugin-uni/packages/postcss': {}
+  }
+}
 ```
 
 - 非 webkit 浏览器适配
