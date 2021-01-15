@@ -67,8 +67,6 @@ export default {
 
 如果应用是一个多 tab 应用，可以通过 tabBar 配置指定的 tab 栏的表现，以及 tab 切换时显示的对应页
 
-Tips
-
 - 当设置 position 为 top 时，将不会显示 icon
 - tabBar 中的 list 是一个数组，只能配置最少 2 个、最多 5 个 tab，tab 按数组的顺序排序。
 - tabbar 切换第一次加载时可能渲染不及时，可以在每个 tabbar 页面的 onLoad 生命周期里先弹出一个等待雪花（hello uni-app 使用了此方式）
